@@ -1,2 +1,2 @@
 # MonsterMatch
-Memory Card Game featuring hand drawn pixel Monster Heads!
+Memory Card Game featuring hand drawn pixel Monsters!
