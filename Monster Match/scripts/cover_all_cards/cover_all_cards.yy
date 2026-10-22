@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"cover_all_cards",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"cover_all_cards",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
