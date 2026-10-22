@@ -22,6 +22,12 @@ music          = -1;        // sound instance of the playing music
 music_waiting  = false;     // music still loading (HTML5)
 is_hurrying    = false;     // last few seconds: music sped up
 
+drops_this_round = 0;       // bonus items dropped so far
+has_second_life  = false;   // picked up an ankh this round
+message          = "";      // short pop-up under the timer ("+5 SEC", "TRICK!")
+message_colour   = c_white;
+message_time     = -1;      // current_time (ms) the message appeared
+
 first_pick  = noone;        // first card turned over this turn
 second_pick = noone;        // second card turned over this turn
 
@@ -93,13 +99,26 @@ start_hurry = function()
     }
 }
 
+// A potion pushed the clock back above the hurry mark.
+end_hurry = function()
+{
+    is_hurrying = false;
+
+    if (music != -1)
+    {
+        audio_sound_pitch(music, 1);
+    }
+}
+
 // Starts (or restarts) a round: reshuffle, show the cards if this difficulty peeks, then play.
 start_round = function()
 {
     alarm[ALARM_PAIR_CHECK]  = -1;   // cancel any pair that was mid-check
     alarm[ALARM_ROUND_TIMER] = -1;
     alarm[ALARM_PEEK]        = -1;
+    alarm[ALARM_BRAIN]       = -1;
 
+    clear_items();
     clear_picks();
     shuffle_cards(deck, rules.columns);
 
@@ -108,6 +127,10 @@ start_round = function()
     misses       = 0;
     is_new_best  = false;
     penalty_time = -1;
+
+    drops_this_round = 0;
+    has_second_life  = false;
+    message_time     = -1;
 
     audio_stop_sound(snd_evil_laugh);
     stop_music();
@@ -140,9 +163,12 @@ end_round = function(_won)
 {
     alarm[ALARM_ROUND_TIMER] = -1;
     alarm[ALARM_PAIR_CHECK]  = -1;
+    alarm[ALARM_BRAIN]       = -1;
     first_pick  = noone;
     second_pick = noone;
     round_over_time = current_time;
+    has_second_life = false;
+    clear_items();
     stop_music();
 
     if (_won)
@@ -200,6 +226,8 @@ resolve_picks = function()
     }
 
     var _is_match = (first_pick.pair_id == second_pick.pair_id);
+    var _slot_x   = first_pick.x;
+    var _slot_y   = first_pick.y;
 
     if (_is_match)
     {
@@ -235,6 +263,11 @@ resolve_picks = function()
     else
     {
         global.game_state = GameState.PLAYING;
+
+        if (_is_match)
+        {
+            try_drop_item(_slot_x, _slot_y);
+        }
     }
 }
 
@@ -246,12 +279,196 @@ apply_penalty = function()
 
     if (alarm[ALARM_ROUND_TIMER] <= _frames)
     {
-        end_round(false);
+        time_up();
         return;
     }
 
     alarm[ALARM_ROUND_TIMER] -= _frames;
 }
+
+// The clock hit zero: an ankh buys a few more seconds, otherwise the round is lost.
+time_up = function()
+{
+    if (has_second_life)
+    {
+        has_second_life = false;
+        alarm[ALARM_ROUND_TIMER] = ANKH_SECONDS * game_get_speed(gamespeed_fps);
+        flash_message("SECOND LIFE!", c_yellow);
+        play_sfx(snd_card_flip, 0.7);
+        return;
+    }
+
+    end_round(false);
+}
+
+#region Bonus items
+
+// Removes any item still waiting to be picked up.
+clear_items = function()
+{
+    with (obj_item)
+    {
+        instance_destroy();
+    }
+}
+
+// Shows a short pop-up under the timer.
+flash_message = function(_text, _colour)
+{
+    message        = _text;
+    message_colour = _colour;
+    message_time   = current_time;
+}
+
+// After a match: maybe drop an item into the empty slot.
+try_drop_item = function(_x, _y)
+{
+    if (drops_this_round >= rules.max_drops || random(1) >= rules.drop_chance)
+    {
+        return;
+    }
+
+    var _item = rules.items[irandom(array_length(rules.items) - 1)];
+    var _drop = instance_create_layer(_x, _y, CARD_LAYER, obj_item);
+    _drop.item         = _item;
+    _drop.sprite_index = item_sprite(_item);
+
+    drops_this_round++;
+}
+
+// Called by obj_item when the player clicks or taps it.
+collect_item = function(_drop)
+{
+    if (global.game_state == GameState.WON || global.game_state == GameState.LOST)
+    {
+        return;
+    }
+
+    var _item = _drop.item;
+    instance_destroy(_drop);
+
+    play_sfx(snd_card_flip, 1.5);
+    use_item(_item, "");
+}
+
+// Applies an item's effect. _prefix is added to the pop-up ("TREAT! ").
+use_item = function(_item, _prefix)
+{
+    var _fps = game_get_speed(gamespeed_fps);
+
+    switch (_item)
+    {
+        case Item.POTION:
+            alarm[ALARM_ROUND_TIMER] += POTION_SECONDS * _fps;   // Step un-hurries the music if needed
+            flash_message(_prefix + "+" + string(POTION_SECONDS) + " SEC", c_lime);
+            break;
+
+        case Item.BRAIN:
+            // Cancel a pair that's mid-check, then show every card for a moment
+            alarm[ALARM_PAIR_CHECK] = -1;
+            clear_picks();
+            reveal_all_cards(deck);
+            global.game_state = GameState.PAUSED;
+            alarm[ALARM_BRAIN] = BRAIN_SECONDS * _fps;
+            flash_message(_prefix + "BIG BRAIN!", c_fuchsia);
+            break;
+
+        case Item.SCARAB:
+            mark_random_pair();
+            flash_message(_prefix + "SEEKER!", c_aqua);
+            break;
+
+        case Item.ANKH:
+            has_second_life = true;
+            flash_message(_prefix + "SECOND LIFE READY", c_yellow);
+            break;
+
+        case Item.BASKET:
+            if (rules.tricks && random(1) < TRICK_CHANCE)
+            {
+                shuffle_unmatched();
+                play_sfx(snd_card_flipback, 0.6);
+                flash_message("TRICK! CARDS SHUFFLED", c_red);
+            }
+            else
+            {
+                var _treats = [Item.POTION, Item.BRAIN, Item.SCARAB];
+                use_item(_treats[irandom(array_length(_treats) - 1)], "TREAT! ");
+            }
+            break;
+    }
+}
+
+// Scarab: lands on a random unmatched card and makes it and its partner glow.
+mark_random_pair = function()
+{
+    var _choices = [];
+    var _count   = ds_list_size(deck);
+
+    for (var _i = 0; _i < _count; _i++)
+    {
+        var _card = deck[| _i];
+        if (!_card.is_matched && !_card.is_face_up)
+        {
+            array_push(_choices, _card);
+        }
+    }
+
+    if (array_length(_choices) == 0)
+    {
+        return;
+    }
+
+    var _target  = _choices[irandom(array_length(_choices) - 1)];
+    var _glow_to = current_time + SCARAB_GLOW_MS;
+
+    for (var _j = 0; _j < _count; _j++)
+    {
+        var _other = deck[| _j];
+        if (_other.pair_id == _target.pair_id)
+        {
+            _other.glow_until = _glow_to;
+        }
+    }
+
+    _target.scarab_until = _glow_to;
+}
+
+// Basket trick: the cards still on the table swap places.
+shuffle_unmatched = function()
+{
+    alarm[ALARM_PAIR_CHECK] = -1;
+    clear_picks();
+
+    var _cards     = [];
+    var _positions = [];
+    var _count     = ds_list_size(deck);
+
+    for (var _i = 0; _i < _count; _i++)
+    {
+        var _card = deck[| _i];
+        if (!_card.is_matched)
+        {
+            array_push(_cards, _card);
+            array_push(_positions, [_card.x, _card.y]);
+        }
+    }
+
+    array_shuffle_ext(_positions);
+
+    for (var _j = 0; _j < array_length(_cards); _j++)
+    {
+        _cards[_j].x = _positions[_j][0];
+        _cards[_j].y = _positions[_j][1];
+    }
+
+    if (global.game_state == GameState.PAUSED && alarm[ALARM_BRAIN] < 0)
+    {
+        global.game_state = GameState.PLAYING;
+    }
+}
+
+#endregion
 
 // True once a round has ended and the short restart delay has passed.
 can_restart = function()

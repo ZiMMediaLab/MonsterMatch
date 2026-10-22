@@ -17,6 +17,15 @@ enum Difficulty
     COUNT
 }
 
+enum Item
+{
+    POTION,   // +5 seconds
+    BRAIN,    // every card shows for a moment
+    SCARAB,   // marks one unmatched pair
+    ANKH,     // one extra life when time runs out
+    BASKET    // random bonus, or a trick on Nightmare
+}
+
 #region Round rules
 #macro RESTART_DELAY_MS     750    // stops a frantic last click from instantly restarting
 #macro PENALTY_SHOW_MS      700    // how long the "-2" shows under the timer
@@ -28,6 +37,20 @@ enum Difficulty
 #macro ALARM_ROUND_TIMER   0
 #macro ALARM_PAIR_CHECK    1
 #macro ALARM_PEEK          2
+#macro ALARM_BRAIN         3
+#endregion
+
+#region Bonus items
+// Matching a pair can drop an item into the empty slot. Click it before it fades.
+#macro ITEM_LIFETIME_MS    3000
+#macro ITEM_FADE_MS        1000   // flickers during its last second
+#macro POTION_SECONDS      5
+#macro BRAIN_SECONDS       1
+#macro SCARAB_GLOW_MS      1500
+#macro ANKH_SECONDS        5
+#macro TRICK_CHANCE        0.35   // Nightmare basket: chance it's a trick
+#macro MESSAGE_SHOW_MS     1200
+#macro ITEM_MESSAGE_Y      66
 #endregion
 
 #region Table layout
@@ -84,17 +107,31 @@ enum Difficulty
 ///              pairs: matching pairs on the table, columns: cards per row,
 ///              seconds: round length, reveal: how long a picked pair stays up,
 ///              peek: seconds every card is shown before the round starts,
-///              penalty: seconds lost for a wrong pair, music: the looping track.
+///              penalty: seconds lost for a wrong pair, music: the looping track,
+///              drop_chance: chance a match drops an item, max_drops: items per round,
+///              items: which items can drop, tricks: the basket can backfire.
 /// @param {Real} _difficulty  A Difficulty value.
 /// @returns {Struct}
 function difficulty_settings(_difficulty)
 {
     static _settings =
     [
-        { name: "EASY",      pairs: 6,  columns: 4, seconds: 90, reveal: 0.8,  peek: 3, penalty: 0, music: snd_music_easy },
-        { name: "MEDIUM",    pairs: 9,  columns: 6, seconds: 75, reveal: 0.6,  peek: 2, penalty: 0, music: snd_music_medium },
-        { name: "HARD",      pairs: 12, columns: 6, seconds: 60, reveal: 0.5,  peek: 0, penalty: 0, music: snd_music_hard },
-        { name: "NIGHTMARE", pairs: 12, columns: 6, seconds: 45, reveal: 0.35, peek: 0, penalty: 2, music: snd_music_nightmare }
+        {
+            name: "EASY", pairs: 6, columns: 4, seconds: 90, reveal: 0.8, peek: 3, penalty: 0, music: snd_music_easy,
+            drop_chance: 0.10, max_drops: 1, items: [Item.POTION], tricks: false
+        },
+        {
+            name: "MEDIUM", pairs: 9, columns: 6, seconds: 75, reveal: 0.6, peek: 2, penalty: 0, music: snd_music_medium,
+            drop_chance: 0.15, max_drops: 2, items: [Item.POTION, Item.BRAIN], tricks: false
+        },
+        {
+            name: "HARD", pairs: 12, columns: 6, seconds: 60, reveal: 0.5, peek: 0, penalty: 0, music: snd_music_hard,
+            drop_chance: 0.20, max_drops: 2, items: [Item.POTION, Item.BRAIN, Item.SCARAB, Item.ANKH], tricks: false
+        },
+        {
+            name: "NIGHTMARE", pairs: 12, columns: 6, seconds: 45, reveal: 0.35, peek: 0, penalty: 2, music: snd_music_nightmare,
+            drop_chance: 0.25, max_drops: 3, items: [Item.POTION, Item.BRAIN, Item.SCARAB, Item.ANKH, Item.BASKET], tricks: true
+        }
     ];
 
     return _settings[_difficulty];
@@ -136,4 +173,14 @@ function monster_faces()
 
     array_shuffle_ext(_faces);
     return _faces;
+}
+
+/// @function item_sprite(_item)
+/// @description Returns the sprite for an Item value.
+/// @param {Real} _item  An Item value.
+/// @returns {Asset.GMSprite}
+function item_sprite(_item)
+{
+    static _sprites = [spr_item_potion, spr_item_brain, spr_item_scarab, spr_item_ankh, spr_item_basket];
+    return _sprites[_item];
 }

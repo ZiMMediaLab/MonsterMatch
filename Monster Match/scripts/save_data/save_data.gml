@@ -72,13 +72,14 @@ function best_times_clear()
     ini_close();
 }
 
-/// @function play_sfx(_sound)
+/// @function play_sfx(_sound, [_pitch])
 /// @description Plays a sound effect unless sounds are turned off in Options.
-/// @param {Asset.GMSound} _sound  Sound to play.
-function play_sfx(_sound)
+/// @param {Asset.GMSound} _sound    Sound to play.
+/// @param {Real}          [_pitch]  1 is normal; higher sounds brighter.
+function play_sfx(_sound, _pitch = 1)
 {
     if (global.sound_on)
     {
-        audio_play_sound(_sound, 0, false);
+        audio_play_sound(_sound, 0, false, 1, 0, _pitch);
     }
 }

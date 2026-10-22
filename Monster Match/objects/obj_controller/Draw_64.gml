@@ -18,6 +18,18 @@ if (penalty_time >= 0 && current_time - penalty_time < PENALTY_SHOW_MS)
     draw_text_shadowed(_centre_x, TIMER_Y + 32, "-" + string(rules.penalty), fnt_timer, c_red);
 }
 
+// Item pop-up ("+5 SEC", "TRICK!")
+if (message_time >= 0 && current_time - message_time < MESSAGE_SHOW_MS)
+{
+    draw_text_shadowed(_centre_x, ITEM_MESSAGE_Y, message, fnt_timer, message_colour);
+}
+
+// Ankh held: small icon left of the pairs counter
+if (has_second_life)
+{
+    draw_sprite_ext(spr_item_ankh, current_time div 300, room_width - 190, TIMER_Y + 14, 0.45, 0.45, 0, c_white, 1);
+}
+
 // Cards showing before the clock starts
 if (alarm[ALARM_PEEK] > 0)
 {

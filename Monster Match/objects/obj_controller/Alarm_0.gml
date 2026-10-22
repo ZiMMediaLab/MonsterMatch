@@ -1,2 +1,2 @@
-/// @description Round timer ran out
-end_round(false);
+/// @description Round timer ran out (an ankh can save the round)
+time_up();

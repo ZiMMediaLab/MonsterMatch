@@ -25,6 +25,25 @@ Works on desktop and mobile, and you can install it to your home screen. After t
 | Hard | 12 | 60 sec | The original game |
 | Nightmare | 12 | 45 sec | Every wrong pair costs 2 seconds |
 
+### Bonus items
+
+Matching a pair can drop a bonus item into the empty slot. Click or tap it before it fades (3 seconds).
+
+| Item | Effect |
+| :--- | :--- |
+| Potion | +5 seconds on the clock |
+| Brain | Big Brain: every card flips face up for 1 second |
+| Scarab | Seeker: the scarab lands on a card and that pair glows for a moment |
+| Ankh | Second Life: when time runs out, you get 5 more seconds (once per round) |
+| Basket | Trick or treat: a random bonus, or on Nightmare, a trick that shuffles the cards left on the table |
+
+| Difficulty | Drop chance per match | Max per round | Items |
+| :--- | :---: | :---: | :--- |
+| Easy | 10% | 1 | Potion |
+| Medium | 15% | 2 | Potion, Brain |
+| Hard | 20% | 2 | Potion, Brain, Scarab, Ankh |
+| Nightmare | 25% | 3 | All five |
+
 Your best time on each difficulty is saved. Music, sounds, and fullscreen (desktop) can be changed in **Options**.
 
 **The monsters:** Alien · Bigfoot · Cyclops · Demon · Dracula · Frankenstein · Merman · Mummy · Robot · Skeleton · Wolfman · Zombie
@@ -40,7 +59,7 @@ Your best time on each difficulty is saved. Music, sounds, and fullscreen (deskt
 | `tools/Build-PWA.ps1` | Turns a GameMaker HTML5 export into the PWA in `docs/` |
 | `docs/` | The live site served by GitHub Pages (generated, don't edit by hand) |
 
-All game settings live in one place: `scripts/game_config`. That includes each difficulty's pairs, time, music, and penalties, plus layout and timing.
+All game settings live in one place: `scripts/game_config`. That includes each difficulty's pairs, time, music, penalties, and item drops, plus layout and timing.
 
 ## Building the Web Version
 

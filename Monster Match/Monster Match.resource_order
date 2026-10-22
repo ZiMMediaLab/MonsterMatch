@@ -15,6 +15,7 @@
     {"name":"Sounds","order":4,"path":"folders/Sounds.yy",},
     {"name":"Game Sounds","order":4,"path":"folders/Sounds/Game Sounds.yy",},
     {"name":"Cards","order":5,"path":"folders/Sprites/Cards.yy",},
+    {"name":"Items","order":7,"path":"folders/Sprites/Items.yy",},
     {"name":"Menu","order":6,"path":"folders/Sprites/Menu.yy",},
     {"name":"Tile Sets","order":3,"path":"folders/Tile Sets.yy",},
     {"name":"Timelines","order":9,"path":"folders/Timelines.yy",},

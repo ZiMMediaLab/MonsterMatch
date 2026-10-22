@@ -7,6 +7,10 @@ if (alarm[ALARM_ROUND_TIMER] > 0)
     {
         start_hurry();
     }
+    else if (is_hurrying && time_left > HURRY_SECONDS)
+    {
+        end_hurry();
+    }
 }
 
 // HTML5: start the music once it has loaded
