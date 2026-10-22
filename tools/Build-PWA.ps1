@@ -102,6 +102,7 @@ $tagMarker
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="MonsterMatch">
+<script data-goatcounter="https://zimmedia-labs.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js"); });
