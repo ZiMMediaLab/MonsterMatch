@@ -3,10 +3,10 @@
 A 60-second memory card game featuring 12 hand-drawn pixel monsters.
 Find all 12 pairs before time runs out, or the monsters get the last laugh.
 
-[![Play](https://img.shields.io/badge/Play_in_browser-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)](https://zimmworks.github.io/MonsterMatch/)
+[![Play](https://img.shields.io/badge/Play_in_browser-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)](https://zimmedialabs.github.io/MonsterMatch/)
 ![GameMaker](https://img.shields.io/badge/GameMaker-000000?style=for-the-badge&logo=gamemaker&logoColor=white)
 
-**▶ Play now:** https://zimmworks.github.io/MonsterMatch/
+**▶ Play now:** https://zimmedialabs.github.io/MonsterMatch/
 Works on desktop and mobile, and you can install it to your home screen. After the first visit it also works offline.
 
 ---
@@ -50,5 +50,5 @@ git push
 
 ## Credits
 
-- **Game & code:** ZiMM ([ZiMMworks](https://github.com/ZiMMworks)), Rock Runner Studio
+- **Game & code:** ZiMM ([ZiMMediaLabs](https://github.com/ZiMMediaLabs)), Rock Runner Studio
 - **Pixel monster art:** PRIMESnakeEyes
