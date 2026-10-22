@@ -1,7 +1,7 @@
 {
   "name": "MonsterMatch",
   "short_name": "MonsterMatch",
-  "description": "A 60-second memory card game featuring 12 hand-drawn pixel monsters.",
+  "description": "A spooky memory card game with 12 hand-drawn pixel monsters and four difficulties, from Easy to Nightmare.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

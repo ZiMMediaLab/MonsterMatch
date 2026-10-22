@@ -34,7 +34,6 @@
     {"name":"shuffle_cards","order":1,"path":"scripts/shuffle_cards/shuffle_cards.yy",},
     {"name":"snd_card_flipback","order":1,"path":"sounds/snd_card_flipback/snd_card_flipback.yy",},
     {"name":"snd_evil_laugh","order":2,"path":"sounds/snd_evil_laugh/snd_evil_laugh.yy",},
-    {"name":"snd_game_music","order":3,"path":"sounds/snd_game_music/snd_game_music.yy",},
     {"name":"spr_bigfootcard","order":1,"path":"sprites/spr_bigfootcard/spr_bigfootcard.yy",},
     {"name":"spr_cardback","order":2,"path":"sprites/spr_cardback/spr_cardback.yy",},
     {"name":"spr_cyclopscard","order":3,"path":"sprites/spr_cyclopscard/spr_cyclopscard.yy",},

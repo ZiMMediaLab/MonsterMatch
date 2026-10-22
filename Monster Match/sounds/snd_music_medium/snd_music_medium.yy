@@ -1,18 +1,18 @@
 {
   "$GMSound":"v2",
-  "%Name":"snd_game_music",
+  "%Name":"snd_music_medium",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
   },
   "bitDepth":1,
-  "channelFormat":0,
-  "compression":0,
+  "channelFormat":1,
+  "compression":3,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":60.534763,
+  "duration":48.000000,
   "exportDir":"",
-  "name":"snd_game_music",
+  "name":"snd_music_medium",
   "parent":{
     "name":"Game Sounds",
     "path":"folders/Sounds/Game Sounds.yy",
@@ -21,6 +21,6 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"snd_game_music.wav",
-  "volume":0.2,
+  "soundFile":"snd_music_medium.ogg",
+  "volume":0.4,
 }

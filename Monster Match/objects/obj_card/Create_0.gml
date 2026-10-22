@@ -1,6 +1,7 @@
-/// @description Card defaults (create_deck sets the real pair_id)
-pair_id    = -1;      // which monster this card shows; both cards in a pair share it
-is_face_up = false;
-is_matched = false;   // matched cards are hidden for the rest of the round
+/// @description Card defaults (create_deck and shuffle_cards fill in the real values)
+pair_id     = -1;             // both cards in a pair share this
+face_sprite = spr_cardback;   // the monster this pair shows this round
+is_face_up  = false;
+is_matched  = false;          // matched cards are hidden for the rest of the round
 
 sprite_index = spr_cardback;

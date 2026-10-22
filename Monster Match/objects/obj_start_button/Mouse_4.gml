@@ -1,2 +1,2 @@
-/// @description Start the game
-room_goto(rm_game);
+/// @description Start - pick a difficulty
+room_goto(rm_difficulty);
