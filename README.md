@@ -17,6 +17,7 @@ Works on desktop and mobile, and you can install it to your home screen. After t
 - If the two match, they leave the table. If they don't, they flip back.
 - Clear the table before the clock runs out. In the last 10 seconds the timer turns red and the music speeds up.
 - When a round ends, click anywhere (or press **Enter**) to play again. **Esc** or the **Back** button returns to the menu.
+- New players get the rules on screen the first time they start the game. **How to Play** in the top-left of the start menu brings them back any time.
 
 | Difficulty | Pairs | Time | Extra |
 | :--- | :---: | :---: | :--- |

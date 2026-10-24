@@ -84,6 +84,18 @@ enum Item
 // Back button in the top-left corner, level with the BEST TIMES tab
 #macro MENU_BACK_X         105
 #macro MENU_BACK_Y         72
+#macro HOW_TO_PLAY_X       165    // start menu: HOW TO PLAY sits in the same corner
+#endregion
+
+#region How to Play screen
+#macro HELP_PAGE_COUNT     3
+#macro HELP_LEFT           110
+#macro HELP_WIDTH          580    // text wraps at this width
+#macro HELP_TITLE_Y        95
+#macro HELP_HEADING_Y      160
+#macro HELP_BODY_Y         215
+#macro HELP_LINE_GAP       14     // space between paragraphs
+#macro HELP_NAV_Y          735
 #endregion
 
 #region Best times drop-down (top-right, clear of the title)

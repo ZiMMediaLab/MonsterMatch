@@ -9,6 +9,7 @@ function settings_load()
     global.sound_on   = ini_read_real("audio", "sound", 1);
     global.fullscreen = ini_read_real("display", "fullscreen", 0);
     global.difficulty = ini_read_real("game", "difficulty", Difficulty.EASY);
+    global.rules_seen = ini_read_real("game", "rules_seen", 0);   // How to Play opens by itself until seen once
     ini_close();
 
     global.difficulty = clamp(global.difficulty, 0, Difficulty.COUNT - 1);
@@ -28,6 +29,7 @@ function settings_save()
     ini_write_real("audio", "sound", global.sound_on);
     ini_write_real("display", "fullscreen", global.fullscreen);
     ini_write_real("game", "difficulty", global.difficulty);
+    ini_write_real("game", "rules_seen", global.rules_seen);
     ini_close();
 }
 

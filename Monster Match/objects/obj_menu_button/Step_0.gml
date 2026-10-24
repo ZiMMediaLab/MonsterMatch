@@ -1,4 +1,10 @@
 /// @description Click when the press and release both happen on this button
+if (!visible)
+{
+    pressed_here = false;
+    exit;
+}
+
 // Checking the press stops a click from the previous room landing on a button here
 if (mouse_check_button_pressed(mb_left))
 {
