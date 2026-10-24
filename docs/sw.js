@@ -1,7 +1,7 @@
 // MonsterMatch service worker: network first, cache fallback.
 // Build-PWA.ps1 sets the cache version on each build.
 
-const CACHE_NAME = "monstermatch-20261024-153134";
+const CACHE_NAME = "monstermatch-20261024-163329";
 
 self.addEventListener("install", () => {
   self.skipWaiting();
