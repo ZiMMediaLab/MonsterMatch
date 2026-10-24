@@ -84,7 +84,6 @@ enum Item
 // Back button in the top-left corner, level with the BEST TIMES tab
 #macro MENU_BACK_X         105
 #macro MENU_BACK_Y         72
-#macro HOW_TO_PLAY_X       165    // start menu: HOW TO PLAY sits in the same corner
 #endregion
 
 #region How to Play screen

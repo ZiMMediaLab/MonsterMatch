@@ -8,7 +8,7 @@ pressed_here = false;   // the click started on this button
 is_hovered = function()
 {
     draw_set_font(fnt_start);
-    var _half_width  = string_width(label) / 2 + 12;
+    var _half_width  = string_width(arcade_spaces(label)) / 2 + 12;
     var _half_height = string_height(label) / 2 + 4;
 
     return point_in_rectangle(mouse_x, mouse_y, x - _half_width, y - _half_height, x + _half_width, y + _half_height);
