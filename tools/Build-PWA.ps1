@@ -93,6 +93,9 @@ New-Item -ItemType File -Path (Join-Path $OutputPath $markerFile) -Force | Out-N
 # 4. Add the PWA tags to index.html
 $html = [IO.File]::ReadAllText($indexFile.FullName)
 
+# GameMaker writes a black page background as "#0", which browsers ignore (the page shows white)
+$html = $html -replace 'background:\s*#0;', 'background: #000000;'
+
 if (-not $html.Contains($tagMarker)) {
     $tags = @"
 $tagMarker
@@ -120,8 +123,9 @@ $tagMarker
     }
 
     $html = $html.Insert($headClose, $tags + "`n")
-    [IO.File]::WriteAllText($indexFile.FullName, $html, $utf8NoBom)
 }
+
+[IO.File]::WriteAllText($indexFile.FullName, $html, $utf8NoBom)
 
 Write-Host ""
 Write-Host "PWA build ready: $OutputPath" -ForegroundColor Green

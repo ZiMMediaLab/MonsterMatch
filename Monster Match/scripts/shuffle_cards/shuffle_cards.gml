@@ -1,6 +1,7 @@
 /// @function shuffle_cards(_deck, _columns)
 /// @description Shuffles the deck, gives each pair a random monster, lays the cards out
-///              in a grid centred on the table, and resets each card to face down and unmatched.
+///              in a grid centred on the table, and resets each card to face down and unmatched
+///              (and clears any scarab glow left from the last round).
 /// @param {Id.DsList} _deck     The list of card instances.
 /// @param {Real}      _columns  Cards per row.
 function shuffle_cards(_deck, _columns)
@@ -26,5 +27,8 @@ function shuffle_cards(_deck, _columns)
         _card.is_face_up  = false;
         _card.is_matched  = false;
         _card.visible     = true;
+
+        _card.glow_until   = 0;
+        _card.scarab_until = 0;
     }
 }

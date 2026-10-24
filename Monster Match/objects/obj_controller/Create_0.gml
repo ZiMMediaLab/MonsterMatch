@@ -351,6 +351,19 @@ collect_item = function(_drop)
     use_item(_item, "");
 }
 
+// A pair is still showing: check it now so a match isn't thrown away.
+// Returns false if that ended the round.
+settle_pair_check = function()
+{
+    if (alarm[ALARM_PAIR_CHECK] > 0)
+    {
+        alarm[ALARM_PAIR_CHECK] = -1;
+        resolve_picks();
+    }
+
+    return (global.game_state != GameState.WON && global.game_state != GameState.LOST);
+}
+
 // Applies an item's effect. _prefix is added to the pop-up ("TREAT! ").
 use_item = function(_item, _prefix)
 {
@@ -364,8 +377,12 @@ use_item = function(_item, _prefix)
             break;
 
         case Item.BRAIN:
-            // Cancel a pair that's mid-check, then show every card for a moment
-            alarm[ALARM_PAIR_CHECK] = -1;
+            // Check a pair that's still showing first, then show every card for a moment
+            if (!settle_pair_check())
+            {
+                break;   // that pair ended the round
+            }
+
             clear_picks();
             reveal_all_cards(deck);
             global.game_state = GameState.PAUSED;
@@ -408,7 +425,7 @@ mark_random_pair = function()
     for (var _i = 0; _i < _count; _i++)
     {
         var _card = deck[| _i];
-        if (!_card.is_matched && !_card.is_face_up)
+        if (!_card.is_matched && _card != first_pick && _card != second_pick)
         {
             array_push(_choices, _card);
         }
@@ -437,7 +454,11 @@ mark_random_pair = function()
 // Basket trick: the cards still on the table swap places.
 shuffle_unmatched = function()
 {
-    alarm[ALARM_PAIR_CHECK] = -1;
+    if (!settle_pair_check())
+    {
+        return;   // that pair ended the round
+    }
+
     clear_picks();
 
     var _cards     = [];

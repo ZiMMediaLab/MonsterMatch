@@ -12,16 +12,14 @@ draw_text_shadowed(room_width - HUD_SIDE_MARGIN, TIMER_Y, "Pairs " + string(pair
 
 draw_set_halign(fa_center);
 
-// Nightmare penalty flash
-if (penalty_time >= 0 && current_time - penalty_time < PENALTY_SHOW_MS)
-{
-    draw_text_shadowed(_centre_x, TIMER_Y + 32, "-" + string(rules.penalty), fnt_timer, c_red);
-}
-
-// Item pop-up ("+5 SEC", "TRICK!")
+// Item pop-up ("+5 SEC", "TRICK!"), or else the Nightmare penalty flash on the same line
 if (message_time >= 0 && current_time - message_time < MESSAGE_SHOW_MS)
 {
     draw_text_shadowed(_centre_x, ITEM_MESSAGE_Y, message, fnt_timer, message_colour);
+}
+else if (penalty_time >= 0 && current_time - penalty_time < PENALTY_SHOW_MS)
+{
+    draw_text_shadowed(_centre_x, ITEM_MESSAGE_Y, "-" + string(rules.penalty), fnt_timer, c_red);
 }
 
 // Ankh held: small icon left of the pairs counter
